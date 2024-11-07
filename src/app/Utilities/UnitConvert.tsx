@@ -5,6 +5,7 @@ import Input from "../Components/Input";
 const UnitWeight = ["g", "kg", "lb", "oz"] as const;
 const UnitCapacity = ["ml", "l", "cup", "tsp", "tbsp", "pint", "qt", "gal"] as const;
 const UnitTemperature = ["°C", "°F"] as const;
+// 8:7  Error: 'Unit' is assigned a value but only used as a type.  @typescript-eslint/no-unused-vars
 const Unit = [
     ...UnitWeight
     , ...UnitCapacity
@@ -12,13 +13,13 @@ const Unit = [
 ] as const;
 type TUnit = typeof Unit[number];
 
-const UnitAlias = {
+/*const UnitAlias = {
     "ml": "cc"
     , "tsp": "teaspoon"
     , "tbsp": "tablespoon"
     , "qt": "quart"
     , "gal": "gallon"
-}
+}*/
 
 type TConvertDetail = { [unit in TUnit]?: (v: number) => number }
 type TConvert = { [toUnit in TUnit]?: TConvertDetail }
@@ -65,10 +66,10 @@ const fnGetPriceRate = (price: number, value: number, unit: TUnit, toUnit: TUnit
 const UnitConvert: React.FC = () => {
     const [price, setPrice] = useState<number>(0);
     const [value, setValue] = useState<number>(0);
-    const [unit, setUnit] = useState<TUnit>("lb");
+    const [fmUnit, setFmUnit] = useState<TUnit>("lb");
 
     const [toValue, setToValue] = useState<number>(0);
-    const [toUnit, setToUnit] = useState<TUnit>("g");
+    const [toUnit, setToUnit] = useState<TUnit>(Unit[0]);
 
     const [priceRate, setPriceRate] = useState<number>(0);
     const [priceRateBase, setPriceRateBase] = useState<string>("/100g");
@@ -79,19 +80,19 @@ const UnitConvert: React.FC = () => {
         if (param.value !== undefined) {
             const nVal = param.value ?? 0;
             setValue(nVal);
-            nToVal = fnConvert(nVal, unit, toUnit);
+            nToVal = fnConvert(nVal, fmUnit, toUnit);
             setToValue(nToVal);
-            setPriceRate(fnGetPriceRate(price, nVal, unit, toUnit));
+            setPriceRate(fnGetPriceRate(price, nVal, fmUnit, toUnit));
         }
         else if (param.price !== undefined) {
             const nPrice = param.price ?? 0;
             setPrice(nPrice);
-            setPriceRate(fnGetPriceRate(nPrice, value, unit, toUnit));
+            setPriceRate(fnGetPriceRate(nPrice, value, fmUnit, toUnit));
         }
         else if (param.unit !== undefined) {
             const nUnit: TUnit = param.unit;
             const nToUnit: TUnit = fnGetToUnit(nUnit);
-            setUnit(nUnit);
+            setFmUnit(nUnit);
             setToUnit(nToUnit);
 
             nToVal = fnConvert(value, nUnit, nToUnit);
@@ -111,7 +112,7 @@ const UnitConvert: React.FC = () => {
 
                 <div className="flex flex-1 flex-row p-2 items-center">
                     <Input value={value} fnOnChange={(nValue: string) => fnEdit({ value: parseFloat(nValue) })} />
-                    <select value={unit} className="text-xl text-right w-full" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
+                    <select value={fmUnit} className="text-xl text-right w-full" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
                         <option disabled>- Wgt -</option>
                         {[...UnitWeight].map((u: string) => <option key={u} value={u}>{u}</option>)}
 

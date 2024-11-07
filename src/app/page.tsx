@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import UnitConvert from "./Utilities/UnitConvert";
 
@@ -9,8 +9,11 @@ const UtilitiesMap: { [key: number]: JSX.Element } = {
 }
 
 const Page: React.FC = () => {
-    const [id, setId] = useState<number>(1);
+    const [id, setId] = useState<number>(0);
 
+    useEffect(() => {
+        setId(1);
+    })
 
     return (
         <>
