@@ -1,24 +1,31 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import UnitConvert from "./Utilities/UnitConvert";
 
-const UtilitiesMap: { [key: number]: JSX.Element } = {
-    1: <UnitConvert />
+const UtilitiesMap: { [key: string]: JSX.Element } = {
+    "Price / Unit Convert": <UnitConvert />
+    , "Pending...": <></>
 }
 
 const Page: React.FC = () => {
-    const [id, setId] = useState<number>(0);
-
-    useEffect(() => {
-        setId(1);
-    })
+    const [curKey, setCurId] = useState<string>("");
 
     return (
-        <>
-            {UtilitiesMap[id] || <></>}
-        </>
+        <div className="flex flex-col w-full">
+            {Object.keys(UtilitiesMap)
+                .map((key: string) => (
+                    <div key={key} className="flex-1 flex flex-col w-full">
+                        <div className="flex-1 border-2 bg-lime-200 cursor-pointer p-1 text-lg"
+                            onClick={() => setCurId(p => (p === key ? "" : key))}>+ {key}</div>
+                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${key === curKey ? "max-h-44" : "max-h-0"}`} >
+                            {UtilitiesMap[key]}
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
     )
 }
 

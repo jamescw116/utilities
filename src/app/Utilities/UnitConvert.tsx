@@ -103,24 +103,25 @@ const UnitConvert: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col">
             <div className="flex flex-row gap-2 w-full max-w-md p-1">
                 <div className="flex flex-1 flex-row p-2 items-center">
-                    <span className="text-3xl pr-1">$</span>
-                    <Input value={price} fnOnChange={(nPrice: string) => fnEdit({ price: parseFloat(nPrice) })} />
+                    <span className="text-2xl pr-1">$</span>
+                    <Input value={price} fnOnChange={(nPrice: number) => fnEdit({ price: nPrice })} />
                 </div>
 
                 <div className="flex flex-1 flex-row p-2 items-center">
-                    <Input value={value} fnOnChange={(nValue: string) => fnEdit({ value: parseFloat(nValue) })} />
-                    <select value={fmUnit} className="text-xl text-right w-full" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
-                        <option disabled>- Wgt -</option>
-                        {[...UnitWeight].map((u: string) => <option key={u} value={u}>{u}</option>)}
+                <div className="text-2xl pr-1 w-6">/</div>
+                <Input value={value} fnOnChange={(nValue: number) => fnEdit({ value: nValue })} />
+                    <select value={fmUnit} className="text-xl text-right w-full bg-transparent" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
+                        <option disabled className="bg-transparent">- Wgt -</option>
+                        {[...UnitWeight].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
 
-                        <option disabled>- Cap -</option>
-                        {[...UnitCapacity].map((u: string) => <option key={u} value={u}>{u}</option>)}
+                        <option disabled className="bg-transparent">- Cap -</option>
+                        {[...UnitCapacity].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
 
-                        <option disabled>- Temp -</option>
-                        {[...UnitTemperature].map((u: string) => <option key={u} value={u}>{u}</option>)}
+                        <option disabled className="bg-transparent">- Temp -</option>
+                        {[...UnitTemperature].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
                     </select>
                 </div>
             </div>
@@ -130,7 +131,7 @@ const UnitConvert: React.FC = () => {
 
                 <div className="flex-1 p-2 flex items-center w-full">
                     <div className="text-3xl text-right flex-1">{toValue}</div>
-                    <div className="text-sm text-right w-12">{toUnit}</div>
+                    <div className="text-sm text-left p-2 w-12">{toUnit}</div>
                 </div>
             </div>
 
@@ -140,7 +141,7 @@ const UnitConvert: React.FC = () => {
                 <div className="flex-1 p-2 flex items-center w-full">
                     <div className="text-3xl pr-1 w-6">$</div>
                     <div className="text-3xl text-right flex-1">{priceRate}</div>
-                    <div className="text-sm text-right w-12">{priceRateBase}</div>
+                    <div className="text-sm text-left p-2 w-12">{priceRateBase}</div>
                 </div>
             </div>
         </div>
