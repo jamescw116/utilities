@@ -5,21 +5,12 @@ import Input from "../Components/Input";
 const UnitWeight = ["g", "kg", "lb", "oz"] as const;
 const UnitCapacity = ["ml", "l", "cup", "tsp", "tbsp", "pint", "qt", "gal"] as const;
 const UnitTemperature = ["°C", "°F"] as const;
-// 8:7  Error: 'Unit' is assigned a value but only used as a type.  @typescript-eslint/no-unused-vars
 const Unit = [
     ...UnitWeight
     , ...UnitCapacity
     , ...UnitTemperature
 ] as const;
 type TUnit = typeof Unit[number];
-
-/*const UnitAlias = {
-    "ml": "cc"
-    , "tsp": "teaspoon"
-    , "tbsp": "tablespoon"
-    , "qt": "quart"
-    , "gal": "gallon"
-}*/
 
 type TConvertDetail = { [unit in TUnit]?: (v: number) => number }
 type TConvert = { [toUnit in TUnit]?: TConvertDetail }
