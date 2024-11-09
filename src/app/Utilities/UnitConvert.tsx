@@ -56,10 +56,10 @@ const fnGetPriceRate = (price: number, value: number, unit: TUnit, toUnit: TUnit
 
 const UnitConvert: React.FC = () => {
     const [price, setPrice] = useState<number>(0);
-    const [value, setValue] = useState<number>(0);
+    const [value, setValue] = useState<number>(1);
     const [fmUnit, setFmUnit] = useState<TUnit>("lb");
 
-    const [toValue, setToValue] = useState<number>(0);
+    const [toValue, setToValue] = useState<number>(fnConvert(1, "lb", Unit[0]));
     const [toUnit, setToUnit] = useState<TUnit>(Unit[0]);
 
     const [priceRate, setPriceRate] = useState<number>(0);
