@@ -19,7 +19,7 @@ const Page: React.FC = () => {
                     <div key={key} className="flex-1 flex flex-col w-full">
                         <div className="flex-1 border-2 bg-lime-200 text-black cursor-pointer p-1 text-lg"
                             onClick={() => setCurId(p => (p === key ? "" : key))}>+ {key}</div>
-                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${key === curKey ? "max-h-44" : "max-h-0"}`} >
+                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${key === curKey ? "max-h-full" : "max-h-0"}`} >
                             {UtilitiesMap[key]}
                         </div>
                     </div>

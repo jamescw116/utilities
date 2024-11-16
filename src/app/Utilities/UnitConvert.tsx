@@ -54,6 +54,27 @@ const fnGetPriceRate = (price: number, value: number, unit: TUnit, toUnit: TUnit
     return isNaN(f) ? 0 : f;
 }
 
+const UnitConvertComp: React.FC<{
+    child1: React.ReactNode
+    , child2: React.ReactNode
+    , child3: React.ReactNode
+    , resultPrefix: string
+    , resultValue: string
+    , resultUnit: string
+}> = ({ child1, child2, child3, resultPrefix, resultValue, resultUnit }) => (
+    <div className="flex-1 flex flex-row items-baseline w-full">
+        <div className="p-1 w-16p">{child1}</div>
+        <div className="p-1 flex-1">{child2}</div>
+        <div className="p-1 w-64p">{child3}</div>
+
+        <div className="p-1 w-24p text-3xl">=</div>
+
+        <div className="p-1 w-16p text-sm">{resultPrefix}</div>
+        <div className="p-1 flex-1 text-3xl text-green-500 font-bold text-right overflow-hidden">{resultValue}</div>
+        <div className="p-1 w-64p text-sm">{resultUnit}</div>
+    </div>
+)
+
 const UnitConvert: React.FC = () => {
     const [price, setPrice] = useState<number>(0);
     const [value, setValue] = useState<number>(1);
@@ -63,7 +84,7 @@ const UnitConvert: React.FC = () => {
     const [toUnit, setToUnit] = useState<TUnit>(Unit[0]);
 
     const [priceRate, setPriceRate] = useState<number>(0);
-    const [priceRateBase, setPriceRateBase] = useState<string>("/100g");
+    const [priceRateBase, setPriceRateBase] = useState<string>("/ 100g");
 
     const fnEdit = (param: { value?: number, unit?: TUnit, price?: number }) => {
         let nToVal: number;
@@ -89,52 +110,40 @@ const UnitConvert: React.FC = () => {
             nToVal = fnConvert(value, nUnit, nToUnit);
             setToValue(nToVal);
             setPriceRate(fnGetPriceRate(price, value, nUnit, nToUnit));
-            setPriceRateBase(`/100${nToUnit}`);
+            setPriceRateBase(`/ 100${nToUnit}`);
         }
     }
 
     return (
-        <div className="flex flex-col">
-            <div className="flex flex-row gap-2 w-full max-w-md p-1">
-                <div className="flex flex-1 flex-row p-2 items-center">
-                    <span className="text-2xl pr-1">$</span>
-                    <Input value={price} fnOnChange={(nPrice: number) => fnEdit({ price: nPrice })} />
-                </div>
+        <div className="flex flex-col p-2">
+            <UnitConvertComp
+                child1={<>&nbsp;</>}
+                child2={<Input value={value} fnOnChange={(nValue: number) => fnEdit({ value: nValue })} />}
+                child3={<select value={fmUnit} className="w-full bg-transparent" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
+                    <option disabled className="bg-transparent">- Wgt -</option>
+                    {[...UnitWeight].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
 
-                <div className="flex flex-1 flex-row p-2 items-center">
-                <div className="text-2xl pr-1 w-6">/</div>
-                <Input value={value} fnOnChange={(nValue: number) => fnEdit({ value: nValue })} />
-                    <select value={fmUnit} className="text-xl text-right w-full bg-transparent" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
-                        <option disabled className="bg-transparent">- Wgt -</option>
-                        {[...UnitWeight].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
+                    <option disabled className="bg-transparent">- Cap -</option>
+                    {[...UnitCapacity].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
 
-                        <option disabled className="bg-transparent">- Cap -</option>
-                        {[...UnitCapacity].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
+                    <option disabled className="bg-transparent">- Temp -</option>
+                    {[...UnitTemperature].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
+                </select>}
 
-                        <option disabled className="bg-transparent">- Temp -</option>
-                        {[...UnitTemperature].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
-                    </select>
-                </div>
-            </div>
+                resultPrefix=""
+                resultValue={toValue.toString()}
+                resultUnit={toUnit}
+            />
 
-            <div className="flex flex-row gap-2 w-full max-w-md p-1">
-                <div className="flex-1 p-2 text-right text-2xl">=</div>
+            <UnitConvertComp
+                child1={<>$</>}
+                child2={<Input value={price} fnOnChange={(nPrice: number) => fnEdit({ price: nPrice })} />}
+                child3={<>/ 1 {fmUnit}</>}
 
-                <div className="flex-1 p-2 flex items-center w-full">
-                    <div className="text-3xl text-right flex-1">{toValue}</div>
-                    <div className="text-sm text-left p-2 w-12">{toUnit}</div>
-                </div>
-            </div>
-
-            <div className="flex flex-row gap-2 w-full max-w-md p-1">
-                <div className="flex-1 p-2 text-right text-2xl">=</div>
-
-                <div className="flex-1 p-2 flex items-center w-full">
-                    <div className="text-3xl pr-1 w-6">$</div>
-                    <div className="text-3xl text-right flex-1">{priceRate}</div>
-                    <div className="text-sm text-left p-2 w-12">{priceRateBase}</div>
-                </div>
-            </div>
+                resultPrefix={"$"}
+                resultValue={priceRate.toString()}
+                resultUnit={priceRateBase}
+            />
         </div>
     )
 }
