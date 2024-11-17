@@ -17,7 +17,7 @@ const Translate: React.FC = () => {
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
-    const fnTranslate = async (text: string, lang: string) => {
+    /*const fnTranslate = async (text: string, lang: string) => {
         const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH}api/translate`
             , {
                 method: "POST"
@@ -32,6 +32,37 @@ const Translate: React.FC = () => {
         const rText = await resp.json();
 
         return Array.isArray(rText) ? rText.join(", ") : rText;
+    }*/
+
+    const fnTranslate = async (text: string, lang: string): Promise<string> => {
+        let result: Array<string> = [];
+
+        try {
+            const gResp = await fetch(
+                `https://translation.googleapis.com/language/translate/v2?key=${process.env.NEXT_PUBLIC_GCP_CloudTranslate}`
+                , {
+                    method: "POST"
+                    , headers: { 'Content-Type': 'application/json' }
+                    , body: JSON.stringify({
+                        q: text
+                        , target: lang
+                    })
+                }
+            );
+
+            const gRespJson = await gResp.json();
+            const gRespData = gRespJson.data.translations;
+            const gRespDataArr = Array.isArray(gRespData) ? gRespData : [gRespData];
+
+            result = gRespDataArr.map((data: { translatedText: string }) => (
+                data.translatedText
+            ));
+        }
+        catch (error: unknown) {
+            console.log(error);
+        }
+
+        return result.join(", ");
     }
 
     const fnUpd = async (param: { v1?: string, v2?: string }) => {
@@ -57,15 +88,11 @@ const Translate: React.FC = () => {
         if (isFetch) {
             if (valueTmp?.v1) {
                 fnTranslate(valueTmp.v1, v2Lang)
-                    .then((v2: string) => {
-                        setValue2(v2);
-                    });
+                    .then((v2: string) => { setValue2(v2); });
             }
             else if (valueTmp?.v2) {
                 fnTranslate(valueTmp.v2, v1Lang)
-                    .then((v1: string) => {
-                        setValue1(v1)
-                    });
+                    .then((v1: string) => { setValue1(v1) });
             }
 
             setValueTmp(undefined);

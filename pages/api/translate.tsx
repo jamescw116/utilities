@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         try {
             const gResp = await fetch(
-                `https://translation.googleapis.com/language/translate/v2?key=${process.env.GCP_CloudTranslate}`
+                `https://translation.googleapis.com/language/translate/v2?key=${process.env.NEXT_PUBLIC_GCP_CloudTranslate}`
                 , {
                     method: "POST"
                     , headers: { 'Content-Type': 'application/json' }
