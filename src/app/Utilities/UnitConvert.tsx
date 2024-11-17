@@ -25,7 +25,7 @@ const Convert: TConvert = {
     }
     , "ml": {
         "l": (v: number) => (v * 1000)
-        , "cup": (v: number) => (v * 453.59)
+        , "cup": (v: number) => (v * 236.59)
         , "tsp": (v: number) => (v * 4.93)
         , "tbsp": (v: number) => (v * 14.79)
         , "pint": (v: number) => (v * 473.18)
@@ -89,7 +89,12 @@ const UnitConvert: React.FC = () => {
     const [priceRate, setPriceRate] = useState<number>(0);
     const [priceRateBase, setPriceRateBase] = useState<string>("/ 100g");
 
-    const fnEdit = (param: { value?: number, unit?: TUnit, price?: number }) => {
+    const fnEditPrice = (price: number) => {
+        setPrice(price);
+        setPriceRate(fnGetPriceRate(price, 1, fmUnit, toUnit));
+    }
+
+    const fnEditValue = (param: { value?: number, unit?: TUnit }) => {
         let nToVal: number;
 
         if (param.value !== undefined) {
@@ -97,12 +102,6 @@ const UnitConvert: React.FC = () => {
             setValue(nVal);
             nToVal = fnConvert(nVal, fmUnit, toUnit);
             setToValue(nToVal);
-            setPriceRate(fnGetPriceRate(price, nVal, fmUnit, toUnit));
-        }
-        else if (param.price !== undefined) {
-            const nPrice = param.price ?? 0;
-            setPrice(nPrice);
-            setPriceRate(fnGetPriceRate(nPrice, value, fmUnit, toUnit));
         }
         else if (param.unit !== undefined) {
             const nUnit: TUnit = param.unit;
@@ -112,8 +111,9 @@ const UnitConvert: React.FC = () => {
 
             nToVal = fnConvert(value, nUnit, nToUnit);
             setToValue(nToVal);
-            setPriceRate(fnGetPriceRate(price, value, nUnit, nToUnit));
+
             setPriceRateBase(`/ 100${nToUnit}`);
+            setPriceRate(fnGetPriceRate(price, 1, nUnit, nToUnit));
         }
     }
 
@@ -121,8 +121,8 @@ const UnitConvert: React.FC = () => {
         <div className="flex flex-col p-2">
             <UnitConvertComp
                 inputPrefix={<>&nbsp;</>}
-                inputValue={<Input value={value} fnOnChange={(nValue: TInputValue) => fnEdit({ value: Number(nValue) })} />}
-                inputUnit={<select value={fmUnit} className="w-full bg-transparent" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
+                inputValue={<Input value={value} fnOnChange={(nValue: TInputValue) => fnEditValue({ value: Number(nValue) })} />}
+                inputUnit={<select value={fmUnit} className="w-full bg-transparent" onChange={(e) => fnEditValue({ unit: e.currentTarget.value as TUnit })}>
                     <option disabled className="bg-transparent">- Wgt -</option>
                     {[...UnitWeight].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
 
@@ -140,12 +140,22 @@ const UnitConvert: React.FC = () => {
 
             <UnitConvertComp
                 inputPrefix={<>$</>}
-                inputValue={<Input value={price} fnOnChange={(nPrice: TInputValue) => fnEdit({ price: Number(nPrice) })} />}
+                inputValue={<Input value={price} fnOnChange={(nPrice: TInputValue) => fnEditPrice(Number(nPrice))} />}
                 inputUnit={<>/ 1 {fmUnit}</>}
 
                 resultPrefix={"$"}
                 resultValue={priceRate.toString()}
                 resultUnit={priceRateBase}
+            />
+
+            <UnitConvertComp
+                inputPrefix={<>&nbsp;</>}
+                inputValue={<>&nbsp;</>}
+                inputUnit={<>&nbsp;</>}
+
+                resultPrefix={"$"}
+                resultValue={(value * price).toString()}
+                resultUnit=""
             />
         </div>
     )

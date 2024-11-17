@@ -12,7 +12,7 @@ const UtilitiesMap: { [key: string]: JSX.Element } = {
 }
 
 const Page: React.FC = () => {
-    const [curKey, setCurId] = useState<string>("");
+    const [curKey, setCurId] = useState<string>("Price / Unit Convert");
 
     return (
         <div className="flex flex-col w-full">
