@@ -3,9 +3,11 @@
 import { useState } from "react";
 
 import UnitConvert from "./Utilities/UnitConvert";
+import Translate from "./Utilities/Translate";
 
 const UtilitiesMap: { [key: string]: JSX.Element } = {
     "Price / Unit Convert": <UnitConvert />
+    , "Translate": <Translate />
     , "Pending...": <></>
 }
 

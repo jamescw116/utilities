@@ -1,6 +1,8 @@
+"use client"
+
 import { useState } from "react";
 
-import Input from "../Components/Input";
+import Input, { TInputValue } from "../Components/Input";
 
 const UnitWeight = ["g", "kg", "lb", "oz"] as const;
 const UnitCapacity = ["ml", "l", "cup", "tsp", "tbsp", "pint", "qt", "gal"] as const;
@@ -118,7 +120,7 @@ const UnitConvert: React.FC = () => {
         <div className="flex flex-col p-2">
             <UnitConvertComp
                 child1={<>&nbsp;</>}
-                child2={<Input value={value} fnOnChange={(nValue: number) => fnEdit({ value: nValue })} />}
+                child2={<Input value={value} fnOnChange={(nValue: TInputValue) => fnEdit({ value: Number(nValue) })} />}
                 child3={<select value={fmUnit} className="w-full bg-transparent" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
                     <option disabled className="bg-transparent">- Wgt -</option>
                     {[...UnitWeight].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
@@ -137,7 +139,7 @@ const UnitConvert: React.FC = () => {
 
             <UnitConvertComp
                 child1={<>$</>}
-                child2={<Input value={price} fnOnChange={(nPrice: number) => fnEdit({ price: nPrice })} />}
+                child2={<Input value={price} fnOnChange={(nPrice: TInputValue) => fnEdit({ price: Number(nPrice) })} />}
                 child3={<>/ 1 {fmUnit}</>}
 
                 resultPrefix={"$"}
