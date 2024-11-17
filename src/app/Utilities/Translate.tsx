@@ -39,7 +39,7 @@ const Translate: React.FC = () => {
 
         try {
             const gResp = await fetch(
-                `https://translation.googleapis.com/language/translate/v2?key=${process.env.NEXT_PUBLIC_GCP_CloudTranslate}`
+                `https://translation.googleapis.com/language/translate/v2?key=${process.env.NEXT_PUBLIC_GCP_CLOUDTRANSLATE}`
                 , {
                     method: "POST"
                     , headers: { 'Content-Type': 'application/json' }
