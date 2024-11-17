@@ -102,6 +102,7 @@ const Translate: React.FC = () => {
 
     return (
         <div className="flex flex-col gap-4 p-2">
+            <div>{process.env.NEXT_PUBLIC_GCP_CLOUDTRANSLATE}</div>
             <div className="flex flex-row">
                 <div>
                     <span className="text-sm text-nowrap uppercase bg-sky-500 text-white p-1 rounded-md m-1">{v1Lang.slice(0, 2)}</span>
