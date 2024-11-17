@@ -57,17 +57,18 @@ const fnGetPriceRate = (price: number, value: number, unit: TUnit, toUnit: TUnit
 }
 
 const UnitConvertComp: React.FC<{
-    child1: React.ReactNode
-    , child2: React.ReactNode
-    , child3: React.ReactNode
+    inputPrefix: React.ReactNode
+    , inputValue: React.ReactNode
+    , inputUnit: React.ReactNode
+
     , resultPrefix: string
     , resultValue: string
     , resultUnit: string
-}> = ({ child1, child2, child3, resultPrefix, resultValue, resultUnit }) => (
+}> = ({ inputPrefix, inputValue, inputUnit, resultPrefix, resultValue, resultUnit }) => (
     <div className="flex-1 flex flex-row items-baseline w-full">
-        <div className="p-1 w-16p">{child1}</div>
-        <div className="p-1 flex-1">{child2}</div>
-        <div className="p-1 w-64p">{child3}</div>
+        <div className="p-1 w-16p">{inputPrefix}</div>
+        <div className="p-1 flex-1">{inputValue}</div>
+        <div className="p-1 w-64p">{inputUnit}</div>
 
         <div className="p-1 w-24p text-3xl">=</div>
 
@@ -119,9 +120,9 @@ const UnitConvert: React.FC = () => {
     return (
         <div className="flex flex-col p-2">
             <UnitConvertComp
-                child1={<>&nbsp;</>}
-                child2={<Input value={value} fnOnChange={(nValue: TInputValue) => fnEdit({ value: Number(nValue) })} />}
-                child3={<select value={fmUnit} className="w-full bg-transparent" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
+                inputPrefix={<>&nbsp;</>}
+                inputValue={<Input value={value} fnOnChange={(nValue: TInputValue) => fnEdit({ value: Number(nValue) })} />}
+                inputUnit={<select value={fmUnit} className="w-full bg-transparent" onChange={(e) => fnEdit({ unit: e.currentTarget.value as TUnit })}>
                     <option disabled className="bg-transparent">- Wgt -</option>
                     {[...UnitWeight].map((u: string) => <option key={u} className="bg-transparent" value={u}>{u}</option>)}
 
@@ -138,9 +139,9 @@ const UnitConvert: React.FC = () => {
             />
 
             <UnitConvertComp
-                child1={<>$</>}
-                child2={<Input value={price} fnOnChange={(nPrice: TInputValue) => fnEdit({ price: Number(nPrice) })} />}
-                child3={<>/ 1 {fmUnit}</>}
+                inputPrefix={<>$</>}
+                inputValue={<Input value={price} fnOnChange={(nPrice: TInputValue) => fnEdit({ price: Number(nPrice) })} />}
+                inputUnit={<>/ 1 {fmUnit}</>}
 
                 resultPrefix={"$"}
                 resultValue={priceRate.toString()}

@@ -75,7 +75,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Create .env.production file
         run: |
-          echo "GCP_CLOUDTRANSLATE=${{ Secrets.GCP_CLOUDTRANSLATE }}" > .env.production
+          echo "GCP_CLOUDTRANSLATE=${{ secrets.GCP_CLOUDTRANSLATE }}" > .env.production
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact

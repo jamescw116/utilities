@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const { text, lang } = req.body;
 
         try {
-            let gResp = await fetch(
+            const gResp = await fetch(
                 `https://translation.googleapis.com/language/translate/v2?key=${process.env.GCP_CloudTranslate}`
                 , {
                     method: "POST"
@@ -21,14 +21,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const gRespJson = await gResp.json();
             const gRespData = gRespJson.data.translations;
-            console.log(gRespData);
             const gRespDataArr = Array.isArray(gRespData) ? gRespData : [gRespData];
 
-            res.status(200).json(gRespDataArr.map((data: any) => (
-                data.translatedText as string
+            res.status(200).json(gRespDataArr.map((data: { translatedText: string }) => (
+                data.translatedText
             )));
         }
-        catch (error: any) {
+        catch (error: unknown) {
             console.log(error);
             res.status(500).json({ message: 'Error translating text' });
         }
