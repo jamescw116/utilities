@@ -17,23 +17,6 @@ const Translate: React.FC = () => {
 
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
-    /*const fnTranslate = async (text: string, lang: string) => {
-        const resp = await fetch(`${process.env.NEXT_PUBLIC_BASE_PATH}api/translate`
-            , {
-                method: "POST"
-                , headers: { 'Content-Type': 'application/json' }
-                , body: JSON.stringify({
-                    text: text
-                    , lang: lang
-                })
-            }
-        );
-
-        const rText = await resp.json();
-
-        return Array.isArray(rText) ? rText.join(", ") : rText;
-    }*/
-
     const fnTranslate = async (text: string, lang: string): Promise<string> => {
         let result: Array<string> = [];
 

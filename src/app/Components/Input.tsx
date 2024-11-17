@@ -23,7 +23,7 @@ const Input: React.FC<{
     , readonly?: boolean
     , fnOnChange?: TFInputOnChange
 }> = ({ value, classNames = [], readonly, fnOnChange }) => (
-    <input {...fnAttr(typeof value)} value={typeof value === "string" ? value : Number(value).toString()}
+    <input {...fnAttr(typeof value)} value={value}
         className={`text-right w-full text-3xl bg-transparent ${classNames.join(" ")}`}
         onChange={(e) => {
             if (fnOnChange) {

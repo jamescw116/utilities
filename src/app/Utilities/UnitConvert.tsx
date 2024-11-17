@@ -134,7 +134,7 @@ const UnitConvert: React.FC = () => {
                 </select>}
 
                 resultPrefix=""
-                resultValue={toValue.toString()}
+                resultValue={toValue.toFixed(3)}
                 resultUnit={toUnit}
             />
 
@@ -144,7 +144,7 @@ const UnitConvert: React.FC = () => {
                 inputUnit={<>/ 1 {fmUnit}</>}
 
                 resultPrefix={"$"}
-                resultValue={priceRate.toString()}
+                resultValue={priceRate.toFixed(3)}
                 resultUnit={priceRateBase}
             />
 
@@ -154,7 +154,7 @@ const UnitConvert: React.FC = () => {
                 inputUnit={<>&nbsp;</>}
 
                 resultPrefix={"$"}
-                resultValue={(value * price).toString()}
+                resultValue={(value * price).toFixed(3)}
                 resultUnit=""
             />
         </div>
