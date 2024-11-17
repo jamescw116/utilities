@@ -76,16 +76,13 @@ jobs:
 
       - name: Log Environment Variables
         run: |
-          echo "NEXT_PUBLIC_BASE_PATH: $NEXT_PUBLIC_BASE_PATH"
-          echo "NEXT_PUBLIC_GCP_CLOUDTRANSLATE: $NEXT_PUBLIC_GCP_CLOUDTRANSLATE"
+          echo "NEXT_PUBLIC_GCP_CLOUDTRANSLATE=${{ secrets.NEXT_PUBLIC_GCP_CLOUDTRANSLATE }}" > .env.production
+          echo "NEXT_PUBLIC_BASE_PATH=${{ vars.NEXT_PUBLIC_BASE_PATH }}" >> .env.production
         env:
-          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
           NEXT_PUBLIC_GCP_CLOUDTRANSLATE: ${{ secrets.NEXT_PUBLIC_GCP_CLOUDTRANSLATE }}
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
 
       - name: Build with Next.js
-        env:
-          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
-          NEXT_PUBLIC_GCP_CLOUDTRANSLATE: ${{ secrets.NEXT_PUBLIC_GCP_CLOUDTRANSLATE }}
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
