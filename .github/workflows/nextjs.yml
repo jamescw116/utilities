@@ -77,6 +77,8 @@ jobs:
         run: |
           echo "GCP_CLOUDTRANSLATE=${{ secrets.GCP_CLOUDTRANSLATE }}" > .env.production
       - name: Build with Next.js
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
