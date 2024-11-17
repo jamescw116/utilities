@@ -75,12 +75,9 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
       - name: Log Environment Variables
-        env:
-          NEXT_PUBLIC_GCP_CLOUDTRANSLATE: ${{ secrets.NEXT_PUBLIC_GCP_CLOUDTRANSLATE }}
-          NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
         run: |
-          echo "NEXT_PUBLIC_GCP_CLOUDTRANSLATE=$NEXT_PUBLIC_GCP_CLOUDTRANSLATE"
-          echo "NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH"
+          echo "NEXT_PUBLIC_GCP_CLOUDTRANSLATE=${{ secrets.NEXT_PUBLIC_GCP_CLOUDTRANSLATE }}"
+          echo "NEXT_PUBLIC_BASE_PATH=${{ vars.NEXT_PUBLIC_BASE_PATH }}"
 
       - name: Build with Next.js
         env:
