@@ -66,15 +66,15 @@ const UnitConvertComp: React.FC<{
     , resultUnit: string
 }> = ({ inputPrefix, inputValue, inputUnit, resultPrefix, resultValue, resultUnit }) => (
     <div className="flex-1 flex flex-row items-baseline w-full">
-        <div className="p-1 w-16p">{inputPrefix}</div>
+        <div className="p-1 w-3">{inputPrefix}</div>
         <div className="p-1 flex-1">{inputValue}</div>
-        <div className="p-1 w-64p">{inputUnit}</div>
+        <div className="p-1 w-16">{inputUnit}</div>
 
-        <div className="p-1 w-24p text-3xl">=</div>
+        <div className="p-1 w-6 text-3xl">=</div>
 
-        <div className="p-1 w-16p text-sm">{resultPrefix}</div>
+        <div className="p-1 w-3 text-sm">{resultPrefix}</div>
         <div className="p-1 flex-1 text-3xl text-green-500 font-bold text-right overflow-hidden">{resultValue}</div>
-        <div className="p-1 w-64p text-sm">{resultUnit}</div>
+        <div className="p-1 w-14 text-sm">{resultUnit}</div>
     </div>
 )
 
@@ -138,25 +138,29 @@ const UnitConvert: React.FC = () => {
                 resultUnit={toUnit}
             />
 
-            <UnitConvertComp
-                inputPrefix={<>$</>}
-                inputValue={<Input value={price} fnOnChange={(nPrice: TInputValue) => fnEditPrice(Number(nPrice))} />}
-                inputUnit={<>/ 1 {fmUnit}</>}
+            {!UnitTemperature.find((t: string) => (t === fmUnit)) && (<>
+                <UnitConvertComp
+                    inputPrefix={<>$</>}
+                    inputValue={<Input value={price} fnOnChange={(nPrice: TInputValue) => fnEditPrice(Number(nPrice))} />}
+                    inputUnit={<>/ 1 {fmUnit}</>}
 
-                resultPrefix={"$"}
-                resultValue={priceRate.toFixed(3)}
-                resultUnit={priceRateBase}
-            />
+                    resultPrefix={"$"}
+                    resultValue={priceRate.toFixed(3)}
+                    resultUnit={priceRateBase}
+                />
 
-            <UnitConvertComp
-                inputPrefix={<>&nbsp;</>}
-                inputValue={<>&nbsp;</>}
-                inputUnit={<>&nbsp;</>}
+                <hr className="w-4/5" />
 
-                resultPrefix={"$"}
-                resultValue={(value * price).toFixed(3)}
-                resultUnit=""
-            />
+                <UnitConvertComp
+                    inputPrefix={<>&nbsp;</>}
+                    inputValue={<>&nbsp;</>}
+                    inputUnit={<>&nbsp;</>}
+
+                    resultPrefix={"$"}
+                    resultValue={(value * price).toFixed(2)}
+                    resultUnit=""
+                />
+            </>)}
         </div>
     )
 }
